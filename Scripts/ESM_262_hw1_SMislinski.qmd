@@ -1,0 +1,73 @@
+---
+title: "ESM_262_hw1_SMislinski"
+format: 
+  html: 
+    code-fold: show
+    toc: true
+    number-sections: true
+    embed-resources: true
+    message: false 
+    warning: false
+editor: visual
+theme: lumen
+execute:
+  echo: true
+  message: false
+  warning: false
+---
+
+# Libraries
+
+```{r}
+library(tidyverse)
+library(here)
+```
+
+# Load Function
+
+```{r}
+source("R/S_Mislinski_Function.R")
+```
+
+# Example
+
+For this example, I started off with a population of 100 fish. This stock of fish was severally depleted due to over fishing and anthropocentric stressors. I'm assuming the stressors and fishing pressures were removed and the stock was able to recover. I'm assuming their population growth rate is 0.3, which is about right for most fish species. I chose a carrying capacity of 500,000 at random and it seems about right for a fish population.
+
+I ran the function for 20 years initially, but it looked like the fish population hadn't reached it's carrying capacity yet so I adjusted it, until it looked like it fully captured the carrying capacity which turned out to be 30 yesrs.
+
+```{r}
+####### Example ######
+# for this we will assume the growth rate is 0.3 (farly common for some fishies)
+# the initial population will be 100 (the poor fishies were over fished)
+# the carrying capacity is 50,000
+
+
+#we need to define some times to run through the function
+t <- seq(0, 30, by = 1)
+#other consents
+r <- 0.3
+N_0 <- 100
+K <-500000
+
+
+# Running the function
+output <- pop_size_func(N_0, K, r, t)
+
+# creating a data frame of the outputs to use in the graph
+output_df <- data.frame(cbind(pop_initial = N_0,
+                              carrying_cap=K,
+                              growth_rate =r,
+                              time=t, population_size = output))
+
+
+```
+
+# Graphing the Function
+
+I graphed the function over the 30 year period. I changed the color of the line, and changed the theme of the graph to make it more appealing.
+
+```{r}
+ggplot(output_df, aes(time, output))+geom_line(color = "darkblue")+
+  labs(x="Time (Years)", y="Population at Time t") + 
+  theme_classic()
+```
